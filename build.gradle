@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.9.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.asciidoctor.convert' version "1.5.9.2"
 	id 'java'
 }
 
@@ -21,6 +22,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
@@ -28,8 +30,30 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1' // jnuit
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1' // jnuit
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+
+	//docs
+	/**
+	 * restdocs - spring mvc test에 의해 자동 생성된 snippet과 직접 작성한 문서를 결합하여
+	 * .adoc문서로 만들어주는 것.
+	 */
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+//asciidoctor - 직접 작성한 문서를 html로 변환.
+//test에만 적용하겠다.
+asciidoctor {
+	dependsOn test
+}
+
+//생성된 jar파일에 문서들을 static 하게 넣고싶을 때 사용
+bootJar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
 }
 
 test {

@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @Disabled
 @WebMvcTest
-public class WebMvcTestCommon {
+public abstract class WebMvcTestCommon {
 
     @Autowired  //근거. @WebMvcTestCommon 안에 @AutoConfigureMockMvc가 있기 때문
     protected MockMvc mockMvc;

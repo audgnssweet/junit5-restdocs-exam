@@ -10,13 +10,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import study.h2.common.config.MemberTestConfig;
 import study.h2.common.WebMvcTestCommon;
 import study.h2.domain.member.application.MemberService;
 import study.h2.domain.member.dto.MemberJoinRequest;
@@ -25,18 +27,15 @@ import study.h2.domain.member.dto.MemberUpdateRequest;
 import study.h2.domain.member.dto.MemberUpdateRequestBuilder;
 import study.h2.domain.member.entity.MemberSetup;
 
+@Import(MemberTestConfig.class)
 @DisplayName("Member Test")
 class MemberControllerUnitTest extends WebMvcTestCommon {
 
     @MockBean   //Mock객체를 Spring IOC Container에 Bean으로 등록해줌.
     private MemberService memberService;
 
+    @Autowired
     private MemberSetup memberSetup;
-
-    @BeforeEach
-    void setUp() {
-        memberSetup = new MemberSetup();
-    }
 
     // BDDMockito pattern - given, when, then
     // 각 테스트는 독립적이어야 함.
@@ -119,13 +118,4 @@ class MemberControllerUnitTest extends WebMvcTestCommon {
             .andExpect(jsonPath("$.name").value("updated"))
             .andDo(MockMvcResultHandlers.print());
     }
-
-    @Test
-    @DisplayName("deleteById : succeed")
-    void deleteByIdTest() {
-        //given
-        when(memberService.deleteById(anyLong())).thenReturn(null);
-
-    }
-
 }

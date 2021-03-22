@@ -8,6 +8,7 @@ import study.h2.domain.member.dto.MemberJoinRequest;
 import study.h2.domain.member.dto.MemberUpdateRequest;
 import study.h2.domain.member.entity.Member;
 import study.h2.domain.member.dao.MemberRepository;
+import study.h2.domain.member.exceptions.MemberNotFoundException;
 
 @RequiredArgsConstructor
 @Transactional
@@ -21,11 +22,11 @@ public class MemberService {
     }
 
     public List<Member> findAll() {
-        return null;
+        return memberRepository.findAll();
     }
 
     public Member findById(Long id) {
-        return null;
+        return memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
     }
 
     public Member updateById(Long id, MemberUpdateRequest dto) {

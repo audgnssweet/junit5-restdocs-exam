@@ -1,0 +1,17 @@
+= Member REST API Guide
+audgnssweet;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+
+
+[[insertPost]]
+=== 회원 리스트 받기
+`Get` 요청으로 회원의 정보를 받아볼 수 있다.
+
+operation::get-members[snippets='http-request,http-response,response-fields']
